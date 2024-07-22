@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
@@ -13,39 +14,26 @@ import TextField from "@mui/material/TextField";
 class App extends React.Component {
   state = {
     searchTerm: "",
-    employees: [
-      {
-        id: 1,
-        name: "Michael Scott",
-        initials: "MS",
-        description: "Reginal Manager",
-      },
-      {
-        id: 2,
-        name: "Dwight Schrute",
-        initials: "DS",
-        description: "Assistant (to the) Regional Manager",
-      },
-      {
-        id: 3,
-        name: "Jim Halpert",
-        initials: "JH",
-        description: "Salesman",
-      },
-      {
-        id: 4,
-        name: "Pam Beasley",
-        initials: "PB",
-        description: "Front Desk Secretary",
-      },
-      {
-        id: 5,
-        name: "Stanley Hudson",
-        initials: "SH",
-        description: "Salesman",
-      },
-    ],
+    employees: [],
   };
+
+  async componentDidMount() {
+    const url = "http://localhost:4000/employees";
+    const response = await axios.get(url);
+    const employees = response.data;
+    this.setState({ employees });
+  }
+
+  async componentDidUpdate(prevProps, prevState) {
+    if (prevState.searchTerm !== this.state.searchTerm) {
+      const url = "http://localhost:4000/employees";
+      const response = await axios.get(url, {
+        params: { q: this.state.searchTerm },
+      });
+      const employees = response.data;
+      this.setState({ employees });
+    }
+  }
 
   handleEmployeeSearch = (event) => {
     this.setState({ searchTerm: event.target.value });
@@ -53,11 +41,6 @@ class App extends React.Component {
 
   render() {
     const { searchTerm, employees } = this.state;
-    const normalizedSearchTerm = searchTerm.toLowerCase();
-
-    const filteredEmployees = employees.filter((employee) =>
-      employee.name.toLowerCase().includes(normalizedSearchTerm)
-    );
 
     return (
       <>
@@ -87,7 +70,7 @@ class App extends React.Component {
                 gap: "16px",
               }}
             >
-              {filteredEmployees.map((employee) => (
+              {employees.map((employee) => (
                 <Card sx={{ width: "300px" }} key={employee.id}>
                   <CardHeader
                     avatar={<Avatar>{employee.initials}</Avatar>}
