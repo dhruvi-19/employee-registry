@@ -13,6 +13,38 @@ import TextField from "@mui/material/TextField";
 class App extends React.Component {
   state = {
     searchTerm: "",
+    employees: [
+      {
+        id: 1,
+        name: "Michael Scott",
+        initials: "MS",
+        description: "Reginal Manager",
+      },
+      {
+        id: 2,
+        name: "Dwight Schrute",
+        initials: "DS",
+        description: "Assistant (to the) Regional Manager",
+      },
+      {
+        id: 3,
+        name: "Jim Halpert",
+        initials: "JH",
+        description: "Salesman",
+      },
+      {
+        id: 4,
+        name: "Pam Beasley",
+        initials: "PB",
+        description: "Front Desk Secretary",
+      },
+      {
+        id: 5,
+        name: "Stanley Hudson",
+        initials: "SH",
+        description: "Salesman",
+      },
+    ],
   };
 
   handleEmployeeSearch = (event) => {
@@ -20,7 +52,13 @@ class App extends React.Component {
   };
 
   render() {
-    const { searchTerm } = this.state;
+    const { searchTerm, employees } = this.state;
+    const normalizedSearchTerm = searchTerm.toLowerCase();
+
+    const filteredEmployees = employees.filter((employee) =>
+      employee.name.toLowerCase().includes(normalizedSearchTerm)
+    );
+
     return (
       <>
         <CssBaseline />
@@ -49,46 +87,17 @@ class App extends React.Component {
                 gap: "16px",
               }}
             >
-              <Card sx={{ width: "300px" }}>
-                <CardHeader avatar={<Avatar>MS</Avatar>} title="Michel Scott" />
-                <CardContent>
-                  <Typography>Regional Manager</Typography>
-                </CardContent>
-              </Card>
-
-              <Card sx={{ width: "300px" }}>
-                <CardHeader
-                  avatar={<Avatar>DS</Avatar>}
-                  title="Dwight Schrute"
-                />
-                <CardContent>
-                  <Typography>Assistant (to the) Regional Manager</Typography>
-                </CardContent>
-              </Card>
-
-              <Card sx={{ width: "300px" }}>
-                <CardHeader avatar={<Avatar>JH</Avatar>} title="Jim Halpert" />
-                <CardContent>
-                  <Typography>Salesman</Typography>
-                </CardContent>
-              </Card>
-
-              <Card sx={{ width: "300px" }}>
-                <CardHeader avatar={<Avatar>PB</Avatar>} title="Pam Beasley" />
-                <CardContent>
-                  <Typography>Front Desk Secretary</Typography>
-                </CardContent>
-              </Card>
-
-              <Card sx={{ width: "300px" }}>
-                <CardHeader
-                  avatar={<Avatar>SH</Avatar>}
-                  title="Stanley Hudson"
-                />
-                <CardContent>
-                  <Typography>Salesman</Typography>
-                </CardContent>
-              </Card>
+              {filteredEmployees.map((employee) => (
+                <Card sx={{ width: "300px" }} key={employee.id}>
+                  <CardHeader
+                    avatar={<Avatar>{employee.initials}</Avatar>}
+                    title={employee.name}
+                  />
+                  <CardContent>
+                    <Typography>{employee.description}</Typography>
+                  </CardContent>
+                </Card>
+              ))}
             </Box>
           </Box>
         </Container>
