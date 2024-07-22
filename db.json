@@ -1,0 +1,34 @@
+{
+  "employees": [
+    {
+      "id": 1,
+      "name": "Michael Scott",
+      "initials": "MS",
+      "description": "Reginal Manager"
+    },
+    {
+      "id": 2,
+      "name": "Dwight Schrute",
+      "initials": "DS",
+      "description": "Assistant (to the) Regional Manager"
+    },
+    {
+      "id": 3,
+      "name": "Jim Halpert",
+      "initials": "JH",
+      "description": "Salesman"
+    },
+    {
+      "id": 4,
+      "name": "Pam Beasley",
+      "initials": "PB",
+      "description": "Front Desk Secretary"
+    },
+    {
+      "id": 5,
+      "name": "Stanley Hudson",
+      "initials": "SH",
+      "description": "Salesman"
+    }
+  ]
+}
