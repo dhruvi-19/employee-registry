@@ -14,6 +14,23 @@ import TextField from "@mui/material/TextField";
 const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [employees, setEmployees] = useState([]);
+  const [time, setTime] = useState("00:00:00");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentTime = new Date();
+      const hours = currentTime.getHours();
+      const minutes = currentTime.getMinutes();
+      const seconds = currentTime.getSeconds();
+
+      const timeAsString = `${hours}:${minutes}:${seconds}`;
+      setTime(timeAsString);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -33,6 +50,10 @@ const App = () => {
         <Box sx={{ bgcolor: "#cfe8fc", height: "100vh", padding: "2rem" }}>
           <Typography variant="h1" align="center" sx={{ fontSize: "3rem" }}>
             Employee Registry
+          </Typography>
+
+          <Typography variant="h2" align="center" sx={{ fontSize: "1.5rem" }}>
+            {time}
           </Typography>
 
           <TextField
