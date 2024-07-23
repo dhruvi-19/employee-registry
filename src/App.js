@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import Avatar from "@mui/material/Avatar";
@@ -11,6 +11,67 @@ import { CssBaseline } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 
+const App = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [employees, setEmployees] = useState([]);
+
+  useEffect(() => {
+    const url = "http://localhost:4000/employees";
+    axios.get(url).then((response) => {
+      const employees = response.data;
+      setEmployees(employees);
+    });
+  });
+
+  return (
+    <>
+      <CssBaseline />
+      <Container maxWidth="lg">
+        <Box sx={{ bgcolor: "#cfe8fc", height: "100vh", padding: "2rem" }}>
+          <Typography variant="h1" align="center" sx={{ fontSize: "3rem" }}>
+            Employee Registry
+          </Typography>
+
+          <TextField
+            id="employeeName"
+            label="Employee Name"
+            value={searchTerm}
+            onChange={(event) => {
+              setSearchTerm(event.target.value);
+            }}
+            variant="standard"
+            margin="normal"
+            sx={{ width: "100%" }}
+          />
+
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "wrap",
+              padding: "32px 64px",
+              gap: "16px",
+            }}
+          >
+            {employees.map((employee) => (
+              <Card sx={{ width: "300px" }} key={employee.id}>
+                <CardHeader
+                  avatar={<Avatar>{employee.initials}</Avatar>}
+                  title={employee.name}
+                />
+                <CardContent>
+                  <Typography>{employee.description}</Typography>
+                </CardContent>
+              </Card>
+            ))}
+          </Box>
+        </Box>
+      </Container>
+    </>
+  );
+};
+
+/*
 class App extends React.Component {
   state = {
     searchTerm: "",
@@ -88,5 +149,6 @@ class App extends React.Component {
     );
   }
 }
+*/
 
 export default App;
